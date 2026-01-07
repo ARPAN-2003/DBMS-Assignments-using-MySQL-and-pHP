@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Person - University Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #8fc2f7 0%, #5da6f5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: #2d2d2d;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #64b5f6;
+            padding-bottom: 15px;
+        }
+
+        .form-header h1 {
+            color: #64b5f6;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .form-header p {
+            color: #b0bec5;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #e0e0e0;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            padding: 12px 15px;
+            border: 2px solid #444;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #3a3a3a;
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #64b5f6;
+            box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+        }
+
+        .required {
+            color: #ff6b6b;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit {
+            background: #3a3a3a;
+            color: #b4dffa;
+            border: 2px solid #64b5f6;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 181, 246, 0.4);
+            background: #444;
+        }
+
+        .btn-reset {
+            background: #3a3a3a;
+            color: #e0e0e0;
+            border: 2px solid #f76060;
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(247, 96, 96, 0.4);
+            background: #444;
+        }
+
+        .step-indicator {
+            text-align: center;
+            color: #64b5f6;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 25px;
+            }
+
+            .form-header h1 {
+                font-size: 1.5rem;
+            }
+
+            button {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="step-indicator">Table 5 of 10</div>
+        
+        <div class="form-header">
+            <h1>👤 Person</h1>
+            <p>Enter person information (Student or Instructor)</p>
+        </div>
+
+        <form method="POST" action="person.php" accept-charset="UTF-8">
+            <div class="form-group">
+                <label for="personId">Person ID <span class="required">*</span></label>
+                <input type="text" id="personId" name="personId" placeholder="e.g., P001" required>
+            </div>
+
+            <div class="form-group">
+                <label for="personName">Person's Name <span class="required">*</span></label>
+                <input type="text" id="personName" name="personName" placeholder="e.g., John Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Person's Date of Birth <span class="required">*</span></label>
+                <input type="date" id="dob" name="dateOfBirth" required>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-submit">Store Data &nbsp;→</button>
+                <button type="reset" class="btn-reset">↻ &nbsp;Reset Form</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
