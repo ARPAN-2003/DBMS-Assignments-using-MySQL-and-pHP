@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Database - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #8fc2f7 0%, #5da6f5 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.7rem;
+            color: #4035f2;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.4rem;
+            color: #544ce6;
+            font-style: italic;
+            text-decoration: underline;
+        }
+
+        .forms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .form-card {
+            background: #2d2d2d;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-left: 5px solid #3899e8;
+            transition: all 0.3s ease;
+        }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .form-card h3 {
+            color: #64b5f6;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-card p {
+            color: #b0bec5;
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-createdb {
+            background: #3a3a3a;
+            font-family: Batang;
+            font-size: 1.2rem;
+            letter-spacing: 1.6px;
+            color: #65f0eb;
+            border: 2px solid #65f0eb;
+        }
+
+        .btn-createdb:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(101, 240, 235, 0.4);
+            background: #404040;
+        }
+
+        .btn-create {
+            background: #3a3a3a;
+            color: #edc9ad;
+            border: 2px solid #e8bfa0;
+        }
+
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(232, 191, 160, 0.4);
+            background: #444;
+        }
+
+        .btn-fill {
+            background: #3a3a3a;
+            color: #a4c5ed;
+            border: 2px solid #64b5f6;
+        }
+
+        .btn-fill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 181, 246, 0.4);
+            background: #444;
+        }
+
+        .btn-show {
+            background: #3a3a3a;
+            color: #9cdbc0;
+            border: 2px solid #66e3ad;
+        }
+
+        .btn-show:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 187, 106, 0.4);
+            background: #404040;
+        }
+
+
+        .form-number {
+            display: inline-block;
+            background: #64b5f6;
+            color: #1a1a2e;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: auto;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #2d2d2d;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            max-width: 400px;
+            text-align: center;
+            border-left: 5px solid #64b5f6;
+        }
+
+        .modal-success {
+            border-left-color: #66bb6a;
+        }
+
+        .modal-failure {
+            border-left-color: #ef5350;
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #64b5f6;
+        }
+
+        .modal-success .modal-title {
+            color: #66bb6a;
+        }
+
+        .modal-failure .modal-title {
+            color: #ef5350;
+        }
+
+        .modal-message {
+            color: #b0bec5;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .modal-close-btn {
+            background: #3a3a3a;
+            color: #b4dffa;
+            border: 2px solid #64b5f6;
+            padding: 10px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 181, 246, 0.4);
+            background: #444;
+        }
+
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .forms-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔭 Research Database Management 🔭</h1>
+            <p>Fill and manage research-based scientific information across all tables</p>
+        </div>
+
+        <div class="forms-grid">
+            <div class="form-card">
+                <div class="button-group">
+                    <button class="btn-createdb" onclick="createDatabase()">📡 CREATE DATABASE - RESEARCH 📡</button>
+                </div>
+            </div>
+
+            <!-- 1. Office -->
+            <div class="form-card">
+                <h3>
+                    🏢 Office
+                    <span class="form-number">Table 1</span>
+                </h3>
+                <p>Create and manage offices. Enter office ID, name, address and phone extension to organize all office details of Central Research Institutes.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Office', 'office')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Office', 'office.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Office', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 2. Researcher -->
+            <div class="form-card">
+                <h3>
+                    🤵🏻 Researcher
+                    <span class="form-number">Table 2</span>
+                </h3>
+                <p>Register researcher information, including employee ID, name, and their office id.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Researcher', 'researcher')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Researcher', 'researcher.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Researcher', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 3. Lab Equipment -->
+            <div class="form-card">
+                <h3>
+                    🦠 Lab Equipment
+                    <span class="form-number">Table 3</span>
+                </h3>
+                <p>Define lab equipments, including equipment id, name, calibration standard.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Lab_Equipment', 'lab_equipment')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Lab_Equipment', 'lab_equipment.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Lab_Equipment', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 4. Researcher uses Equipment -->
+            <div class="form-card">
+                <h3>
+                    🤵🏻-🦠 Researcher_uses_Equipment
+                    <span class="form-number">Table 4</span>
+                </h3>
+                <p>Link researchers to lab equipments. This junction table establishes the relationship between researchers and the lab equipment they use.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Uses', 'researcher_uses_equipment')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Uses', 'researcher_uses_equipment.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Uses', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 5. Journal Issue -->
+            <div class="form-card">
+                <h3>
+                    📰 Journal Issue
+                    <span class="form-number">Table 5</span>
+                </h3>
+                <p>Register journal issues in the system. Enter volume ID, journal title, its publication date, format and employee id who acts as an editor-in-chief.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Journal_Issue', 'journal_issue')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Journal_Issue', 'journal_issue.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Journal_Issue', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 6. Research Paper -->
+            <div class="form-card">
+                <h3>
+                    📄 Research Paper
+                    <span class="form-number">Table 6</span>
+                </h3>
+                <p>Register research papers, including paper id, its name and volume id associated with journal issue.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Research_Paper', 'research_paper')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Research_Paper', 'research_paper.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Research_Paper', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 7. Researcher writes Research Paper -->
+            <div class="form-card">
+                <h3>
+                    🤵🏻-📄 Researcher_writes_ResearchPaper
+                    <span class="form-number">Table 7</span>
+                </h3>
+                <p>Link researchers to research papers. This junction table establishes the relationship between researchers and the research papers they write.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Writes', 'researcher_writes_researchpaper')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Writes', 'researcher_writes_researchpaper.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Writes', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 8. Researcher leads ResearchPaper -->
+            <div class="form-card">
+                <h3>
+                    🤵🏻-📄 Researcher_leads_ResearchPaper
+                    <span class="form-number">Table 8</span>
+                </h3>
+                <p>Link researchers to research papers. This junction table establishes the relationship between researchers and the research papers they lead.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Leads', 'researcher_leads_researchpaper')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Leads', 'researcher_leads_researchpaper.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Leads', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Create Form Response -->
+    <div id="responseModal" class="modal">
+        <div class="modal-content" id="modalContent">
+            <div class="modal-icon" id="modalIcon"></div>
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-message" id="modalMessage"></div>
+            <button class="modal-close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function createDatabase() {
+            // Send request to create_database.php
+            fetch('create_database.php', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                showModal(data.success, data.message, "create_database");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal(false, 'Error creating database. Please try again.');
+            });
+        }
+
+        function checkTableExists(tableName, tableType) {
+            // Create FormData to send via fetch
+            const formData = new FormData();
+            formData.append('table_name', tableName);
+            formData.append('table_type', tableType);
+
+            // Send request to check_table.php
+            fetch('check_table.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                showModal(data.success, data.message, tableType);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal(false, 'Error checking table. Please try again.', tableType);
+            });
+        }
+
+        function checkAndFillForm(tableName, formPage) {
+            // Create FormData to send via fetch
+            const formData = new FormData();
+            formData.append('table_name', tableName);
+            formData.append('action', 'check');
+
+            // Send request to check_table.php
+            fetch('check_table.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                if(data.table_exists) {
+                    // Table exists, go to form page
+                    window.location.href = formPage;
+                } else {
+                    // Table doesn't exist, show error modal
+                    showModal(false, 'Create the Form at first! Then fill the form...', 'fill');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal(false, 'Error checking table. Please try again.', 'fill');
+            });
+        }
+
+        function checkAndShowTable(tableName, showPage) {
+            const formData = new FormData();
+            formData.append('table_name', tableName);
+            formData.append('action', 'check');
+
+            fetch('check_table.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                if(data.table_exists) {
+                    // Pass table name as URL parameter
+                    window.location.href = showPage + '?table=' + tableName;
+                } else {
+                    showModal(false, 'Form does not exist. Create the Form first!', 'show');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal(false, 'Error: ' + error.message, 'show');
+            });
+        }
+
+        function showModal(isSuccess, message, tableType) {
+            const modal = document.getElementById('responseModal');
+            const modalContent = document.getElementById('modalContent');
+            const icon = document.getElementById('modalIcon');
+            const title = document.getElementById('modalTitle');
+            const messageText = document.getElementById('modalMessage');
+
+            if(isSuccess) {
+                modalContent.classList.add('modal-success');
+                modalContent.classList.remove('modal-failure');
+                icon.textContent = '✓';
+                title.textContent = 'Success!';
+                messageText.textContent = message;
+            } else {
+                modalContent.classList.add('modal-failure');
+                modalContent.classList.remove('modal-success');
+                icon.textContent = '✗';
+                title.textContent = 'Error!';
+                messageText.textContent = message;
+            }
+
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('responseModal');
+            modal.classList.remove('show');
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('responseModal');
+            if (event.target == modal) {
+                modal.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>
