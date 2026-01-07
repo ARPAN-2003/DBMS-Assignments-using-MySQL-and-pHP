@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Database - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #8fc2f7 0%, #5da6f5 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.7rem;
+            color: #4035f2;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.4rem;
+            color: #544ce6;
+            font-style: italic;
+            text-decoration: underline;
+        }
+
+        .forms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .form-card {
+            background: #2d2d2d;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-left: 5px solid #3899e8;
+            transition: all 0.3s ease;
+        }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .form-card h3 {
+            color: #64b5f6;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-card p {
+            color: #b0bec5;
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-createdb {
+            background: #3a3a3a;
+            font-family: Batang;
+            font-size: 1.2rem;
+            letter-spacing: 1.6px;
+            color: #65f0eb;
+            border: 2px solid #65f0eb;
+        }
+
+        .btn-createdb:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(101, 240, 235, 0.4);
+            background: #404040;
+        }
+
+        .btn-create {
+            background: #3a3a3a;
+            color: #edc9ad;
+            border: 2px solid #e8bfa0;
+        }
+
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(232, 191, 160, 0.4);
+            background: #444;
+        }
+
+        .btn-fill {
+            background: #3a3a3a;
+            color: #a4c5ed;
+            border: 2px solid #64b5f6;
+        }
+
+        .btn-fill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 181, 246, 0.4);
+            background: #444;
+        }
+
+        .btn-show {
+            background: #3a3a3a;
+            color: #9cdbc0;
+            border: 2px solid #66e3ad;
+        }
+
+        .btn-show:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 187, 106, 0.4);
+            background: #404040;
+        }
+
+
+        .form-number {
+            display: inline-block;
+            background: #64b5f6;
+            color: #1a1a2e;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: auto;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #2d2d2d;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            max-width: 400px;
+            text-align: center;
+            border-left: 5px solid #64b5f6;
+        }
+
+        .modal-success {
+            border-left-color: #66bb6a;
+        }
+
+        .modal-failure {
+            border-left-color: #ef5350;
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #64b5f6;
+        }
+
+        .modal-success .modal-title {
+            color: #66bb6a;
+        }
+
+        .modal-failure .modal-title {
+            color: #ef5350;
+        }
+
+        .modal-message {
+            color: #b0bec5;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .modal-close-btn {
+            background: #3a3a3a;
+            color: #b4dffa;
+            border: 2px solid #64b5f6;
+            padding: 10px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 181, 246, 0.4);
+            background: #444;
+        }
+
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .forms-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 University Database Management 🎓</h1>
+            <p>Fill and manage academic information across all tables</p>
+        </div>
+
+        <div class="forms-grid">
+            <div class="form-card">
+                <div class="button-group">
+                    <button class="btn-createdb" onclick="createDatabase()">✈ CREATE DATABASE - UNIVERSITY ✈</button>
+                </div>
+            </div>
+
+            <!-- 1. Academic Department -->
+            <div class="form-card">
+                <h3>
+                    🏢 Academic Department
+                    <span class="form-number">Table 1</span>
+                </h3>
+                <p>Create and manage academic departments. Enter department ID, name, and main office location to organize your university's academic structure.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Academic_Department', 'academic_department')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Academic_Department', 'academic_department.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Academic_Department', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 2. Course -->
+            <div class="form-card">
+                <h3>
+                    📖 Course
+                    <span class="form-number">Table 2</span>
+                </h3>
+                <p>Register courses offered by departments. Include course ID, title, offering year, duration, syllabus outline, and department affiliation.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Course', 'course')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Course', 'course.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Course', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 3. Subject Area -->
+            <div class="form-card">
+                <h3>
+                    📚 Subject Area
+                    <span class="form-number">Table 3</span>
+                </h3>
+                <p>Define subject areas and disciplines. Create a taxonomy of subjects like Programming, Mathematics, Physics, etc. for course classification.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Subject_Area', 'subject_area')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Subject_Area', 'subject_area.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Subject_Area', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 4. Course - Subject Area -->
+            <div class="form-card">
+                <h3>
+                    🔗 Course - Subject Area
+                    <span class="form-number">Table 4</span>
+                </h3>
+                <p>Link courses to subject areas. This junction table establishes the relationship between courses and the subjects they cover.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Course_SubjectArea', 'course_subjectarea')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Course_SubjectArea', 'course_subjectarea.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Course_SubjectArea', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 5. Person -->
+            <div class="form-card">
+                <h3>
+                    👤 Person
+                    <span class="form-number">Table 5</span>
+                </h3>
+                <p>Register individuals in the system. Enter person ID, full name, and date of birth. This is the base entity for both students and instructors.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Person', 'person')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Person', 'person.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Person', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 6. Student -->
+            <div class="form-card">
+                <h3>
+                    🎒 Student
+                    <span class="form-number">Table 6</span>
+                </h3>
+                <p>Register students. Link a person record to create a student profile. A person can be both a student and an instructor.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Student', 'student')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Student', 'student.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Student', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 7. Instructor -->
+            <div class="form-card">
+                <h3>
+                    👨‍🏫 Instructor
+                    <span class="form-number">Table 7</span>
+                </h3>
+                <p>Register instructors. Link a person record to create an instructor profile. Instructors can also enroll as students in courses.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Instructor', 'instructor')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Instructor', 'instructor.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Instructor', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 8. Course - Person -->
+            <div class="form-card">
+                <h3>
+                    🔗 Course - Person
+                    <span class="form-number">Table 8</span>
+                </h3>
+                <p>Enroll person to courses. This junction table links courses with their enrolled person.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Enrolls', 'enrolls')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Enrolls', 'enrolls.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Enrolls', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 9. Course - Instructor -->
+            <div class="form-card">
+                <h3>
+                    🔗 Course - Instructor
+                    <span class="form-number">Table 9</span>
+                </h3>
+                <p>Assign instructors to courses. This junction table links courses with their teaching instructors. One course can have multiple instructors.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Course_Instructor', 'course_instructor')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Course_Instructor', 'course_instructor.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Course_Instructor', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 10. Final Project -->
+            <div class="form-card">
+                <h3>
+                    🎯 Final Project
+                    <span class="form-number">Table 10</span>
+                </h3>
+                <p>Record final projects submitted by students. Enter project ID, name, course ID, and the student who submitted it.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Final_Project', 'final_project')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Final_Project', 'final_project.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Final_Project', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+
+            <!-- 11. Course Completion -->
+            <div class="form-card">
+                <h3>
+                    📝 Course Completion
+                    <span class="form-number">Table 11</span>
+                </h3>
+                <p>Record course completions of students in various courses. Track which students have completed in which courses and their grades for each course.</p>
+                <div class="button-group">
+                    <button class="btn-create" onclick="checkTableExists('Course_Student', 'course_student')">✓ Create Form</button>
+                    <button class="btn-fill" onclick="checkAndFillForm('Course_Student', 'course_student.html')">Fill Form →</button>
+                    <button class="btn-show" onclick="checkAndShowTable('Course_Student', 'show_tables.php')">📊 Show Table</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Create Form Response -->
+    <div id="responseModal" class="modal">
+        <div class="modal-content" id="modalContent">
+            <div class="modal-icon" id="modalIcon"></div>
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-message" id="modalMessage"></div>
+            <button class="modal-close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function createDatabase() {
+            // Send request to create_database.php
+            fetch('create_database.php', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                showModal(data.success, data.message, "create_database");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal(false, 'Error creating database. Please try again.');
+            });
+        }
+
+        function checkTableExists(tableName, tableType) {
+            // Create FormData to send via fetch
+            const formData = new FormData();
+            formData.append('table_name', tableName);
+            formData.append('table_type', tableType);
+
+            // Send request to check_table.php
+            fetch('check_table.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                showModal(data.success, data.message, tableType);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal(false, 'Error checking table. Please try again.', tableType);
+            });
+        }
+
+        function checkAndFillForm(tableName, formPage) {
+            // Create FormData to send via fetch
+            const formData = new FormData();
+            formData.append('table_name', tableName);
+            formData.append('action', 'check');
+
+            // Send request to check_table.php
+            fetch('check_table.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                if(data.table_exists) {
+                    // Table exists, go to form page
+                    window.location.href = formPage;
+                } else {
+                    // Table doesn't exist, show error modal
+                    showModal(false, 'Create the Form at first! Then fill the form...', 'fill');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal(false, 'Error checking table. Please try again.', 'fill');
+            });
+        }
+
+        function checkAndShowTable(tableName, showPage) {
+            const formData = new FormData();
+            formData.append('table_name', tableName);
+            formData.append('action', 'check');
+
+            fetch('check_table.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                if(data.table_exists) {
+                    // Pass table name as URL parameter
+                    window.location.href = showPage + '?table=' + tableName;
+                } else {
+                    showModal(false, 'Form does not exist. Create the Form first!', 'show');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal(false, 'Error: ' + error.message, 'show');
+            });
+        }
+
+        function showModal(isSuccess, message, tableType) {
+            const modal = document.getElementById('responseModal');
+            const modalContent = document.getElementById('modalContent');
+            const icon = document.getElementById('modalIcon');
+            const title = document.getElementById('modalTitle');
+            const messageText = document.getElementById('modalMessage');
+
+            if(isSuccess) {
+                modalContent.classList.add('modal-success');
+                modalContent.classList.remove('modal-failure');
+                icon.textContent = '✓';
+                title.textContent = 'Success!';
+                messageText.textContent = message;
+            } else {
+                modalContent.classList.add('modal-failure');
+                modalContent.classList.remove('modal-success');
+                icon.textContent = '✗';
+                title.textContent = 'Error!';
+                messageText.textContent = message;
+            }
+
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('responseModal');
+            modal.classList.remove('show');
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('responseModal');
+            if (event.target == modal) {
+                modal.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>
